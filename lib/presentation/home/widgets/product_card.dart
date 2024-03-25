@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../core/components/spaces.dart';
-import '../../../core/core/assets/assets.gen.dart';
 import '../../../core/core/constants/colors.dart';
 import '../models/product_model.dart';
 
