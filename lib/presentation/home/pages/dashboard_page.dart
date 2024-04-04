@@ -6,6 +6,7 @@ import 'package:flutter_posresto_app/core/core/core.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_local_datasource.dart';
 import 'package:flutter_posresto_app/presentation/auth/login_page.dart';
 import 'package:flutter_posresto_app/presentation/home/pages/home_page.dart';
+import 'package:flutter_posresto_app/presentation/setting/pages/sync_data_pages.dart';
 import '../../auth/bloc/logout/logout_bloc.dart';
 import '../widgets/nav_item.dart';
 
@@ -27,9 +28,11 @@ class _DashboardPageState extends State<DashboardPage> {
     const Center(
       child: Text('This Page 2'),
     ),
+    const SyncDataPage(),
     const Center(
       child: Text('This is page 3'),
     ),
+
     // const ManagePrinterPage(),
     // const SettingsPage(),
   ];

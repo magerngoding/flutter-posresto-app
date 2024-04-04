@@ -3,13 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_local_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_remote_datasource.dart';
+import 'package:flutter_posresto_app/data/datasource/product_local_datasource.dart';
+import 'package:flutter_posresto_app/data/datasource/product_remote_datasource.dart';
 import 'package:flutter_posresto_app/presentation/auth/login_page.dart';
+import 'package:flutter_posresto_app/presentation/home/bloc/local_product/local_product_bloc.dart';
+import 'package:flutter_posresto_app/presentation/setting/bloc/sync_product/sync_product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/core/constants/colors.dart';
 import 'presentation/auth/bloc/login/login_bloc.dart';
 import 'presentation/auth/bloc/logout/logout_bloc.dart';
+import 'presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'presentation/home/pages/dashboard_page.dart';
 
 void main() {
@@ -34,8 +39,22 @@ class MyApp extends StatelessWidget {
             AuthRemoteDatasource(),
           ),
         ),
+        BlocProvider(
+          create: (context) => SyncProductBloc(
+            ProductRemoteDatasource(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => LocalProductBloc(
+            ProductLocalDatasource.instance,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CheckoutBloc(),
+        ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_posresto_app/core/core/constants/variable.dart';
+import 'package:flutter_posresto_app/core/core/core.dart';
 import 'package:flutter_posresto_app/core/core/extensions/int_ext.dart';
+import 'package:flutter_posresto_app/presentation/home/models/product_quantity.dart';
 
 import '../../../core/components/spaces.dart';
 import '../../../core/core/constants/colors.dart';
-import '../models/order_item.dart';
 
 class OrderMenu extends StatelessWidget {
-  final OrderItem data;
+  final ProductQuantity data;
   const OrderMenu({super.key, required this.data});
 
   @override
@@ -22,15 +24,17 @@ class OrderMenu extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 leading: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                  child: Image.asset(
-                    data.product.image,
+                  child: Image.network(
+                    data.product.image!.contains('http')
+                        ? data.product.image!
+                        : '${Variables.baseUrl}/${data.product.image}',
                     width: 40.0,
                     height: 40.0,
                     fit: BoxFit.cover,
                   ),
                 ),
                 title: FittedBox(
-                  child: Text(data.product.name,
+                  child: Text(data.product.name!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -38,7 +42,8 @@ class OrderMenu extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       )),
                 ),
-                subtitle: Text(data.product.priceFormat),
+                subtitle: Text(
+                    data.product.price!.toIntegerFromText.currencyFormatRp),
               ),
             ),
             // SizedBox(
@@ -109,7 +114,8 @@ class OrderMenu extends StatelessWidget {
             SizedBox(
               width: 80.0,
               child: Text(
-                (data.product.price * data.quantity).currencyFormatRp,
+                (data.product.price!.toIntegerFromText * data.quantity)
+                    .currencyFormatRp,
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   color: AppColors.primary,
