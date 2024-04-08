@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class ProductResponseModel {
@@ -85,6 +84,11 @@ class Product {
             : Category.fromMap(json["category"]),
       );
 
+  factory Product.fromOrderMap(Map<String, dynamic> json) => Product(
+        id: json["id_product"],
+        price: json["price"].toString(),
+      );
+
   factory Product.fromLocalMap(Map<String, dynamic> json) => Product(
         id: json["productId"],
         categoryId: json["categoryId"],
@@ -138,10 +142,11 @@ class Product {
       };
 
   @override
-  bool operator ==(covariant Product other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
+    return other is Product &&
+        other.id == id &&
         other.categoryId == categoryId &&
         other.name == name &&
         other.description == description &&

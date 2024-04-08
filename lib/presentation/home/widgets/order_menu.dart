@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_posresto_app/core/core/constants/variable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_posresto_app/core/core/core.dart';
-import 'package:flutter_posresto_app/core/core/extensions/int_ext.dart';
+import 'package:flutter_posresto_app/presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'package:flutter_posresto_app/presentation/home/models/product_quantity.dart';
 
 import '../../../core/components/spaces.dart';
-import '../../../core/core/constants/colors.dart';
+import '../../../core/core/constants/variable.dart';
 
 class OrderMenu extends StatelessWidget {
   final ProductQuantity data;
@@ -71,6 +71,10 @@ class OrderMenu extends StatelessWidget {
                     //   // data.quantity--;
                     //   // setState(() {});
                     // }
+
+                    context
+                        .read<CheckoutBloc>()
+                        .add(CheckoutEvent.removeItem(data.product));
                   },
                   child: Container(
                     width: 30,
@@ -97,6 +101,9 @@ class OrderMenu extends StatelessWidget {
                     //     onDeleteTap();
                     // data.quantity++;
                     // setState(() {});
+                    context
+                        .read<CheckoutBloc>()
+                        .add(CheckoutEvent.addItmem(data.product));
                   },
                   child: Container(
                     width: 30,

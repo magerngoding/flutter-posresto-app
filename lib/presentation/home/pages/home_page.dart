@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_posresto_app/core/core/core.dart';
@@ -12,6 +13,7 @@ import '../widgets/custom_tab_bar.dart';
 import '../widgets/home_title.dart';
 import '../widgets/order_menu.dart';
 import '../widgets/product_card.dart';
+import 'confirm_payment_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,128 +26,6 @@ class _HomePageState extends State<HomePage> {
   final searchController = TextEditingController();
 
   List<ProductModel> searchResults = [];
-  // final List<ProductModel> products = [
-  //   ProductModel(
-  //       image: Assets.images.menu1.path,
-  //       name: 'Express Bowl Ayam Rica',
-  //       category: ProductCategory.food,
-  //       price: 32000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu2.path,
-  //       name: 'Crispy Black Pepper Sauce',
-  //       category: ProductCategory.food,
-  //       price: 36000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu3.path,
-  //       name: 'Mie Ayam Teriyaki',
-  //       category: ProductCategory.food,
-  //       price: 33000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu4.path,
-  //       name: 'Nasi Ayam Teriyaki',
-  //       category: ProductCategory.food,
-  //       price: 21000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu5.path,
-  //       name: ' Katsu Teriyaki Saos',
-  //       category: ProductCategory.food,
-  //       price: 40000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu6.path,
-  //       name: 'Sapo Tahu Ayam',
-  //       category: ProductCategory.food,
-  //       price: 41000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu7.path,
-  //       name: ' Sapo Tahu Sapi',
-  //       category: ProductCategory.food,
-  //       price: 44000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu8.path,
-  //       name: 'Chicken Cordon Bleu',
-  //       category: ProductCategory.food,
-  //       price: 45000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu10.path,
-  //       name: 'Fish & Chips ',
-  //       category: ProductCategory.food,
-  //       price: 35000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu11.path,
-  //       name: 'Bihun Ayam',
-  //       category: ProductCategory.food,
-  //       price: 39000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu12.path,
-  //       name: 'Bihun Goreng Ayam',
-  //       category: ProductCategory.food,
-  //       price: 38000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu13.path,
-  //       name: 'Nasi Goreng Special',
-  //       category: ProductCategory.food,
-  //       price: 35000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu14.path,
-  //       name: 'Nasi Cap Cay',
-  //       category: ProductCategory.food,
-  //       price: 40000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink1.path,
-  //       name: 'Teh Tarik',
-  //       category: ProductCategory.drink,
-  //       price: 20000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink2.path,
-  //       name: 'Thai Tea',
-  //       category: ProductCategory.drink,
-  //       price: 22000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink3.path,
-  //       name: 'Jus Melon',
-  //       category: ProductCategory.drink,
-  //       price: 25000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink4.path,
-  //       name: 'Jus Stawberry',
-  //       category: ProductCategory.drink,
-  //       price: 24000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink5.path,
-  //       name: 'Air Mineral Botol',
-  //       category: ProductCategory.drink,
-  //       price: 6000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.drink6.path,
-  //       name: 'Jus Alpukat',
-  //       category: ProductCategory.drink,
-  //       price: 25000,
-  //       stock: 10),
-  //   ProductModel(
-  //       image: Assets.images.menu14.path,
-  //       name: 'Caramel Candy Blend',
-  //       category: ProductCategory.drink,
-  //       price: 30000,
-  //       stock: 10),
-  // ];
 
   @override
   void initState() {
@@ -399,108 +279,6 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             ),
-                            // if (searchResults
-                            //     .where((element) => element.category.isFood)
-                            //     .toList()
-                            //     .isEmpty)
-                            //   const Padding(
-                            //     padding: EdgeInsets.only(top: 80.0),
-                            //     child: _IsEmpty(),
-                            //   )
-                            // else
-                            //   SizedBox(
-                            //     child: GridView.builder(
-                            //       shrinkWrap: true,
-                            //       itemCount: searchResults
-                            //           .where(
-                            //               (element) => element.category.isFood)
-                            //           .toList()
-                            //           .length,
-                            //       physics: const NeverScrollableScrollPhysics(),
-                            //       gridDelegate:
-                            //           const SliverGridDelegateWithFixedCrossAxisCount(
-                            //         childAspectRatio: 0.85,
-                            //         crossAxisCount: 3,
-                            //         crossAxisSpacing: 30.0,
-                            //         mainAxisSpacing: 30.0,
-                            //       ),
-                            //       itemBuilder: (context, index) => ProductCard(
-                            //         data: searchResults
-                            //             .where((element) =>
-                            //                 element.category.isFood)
-                            //             .toList()[index],
-                            //         onCartButton: () {},
-                            //       ),
-                            //     ),
-                            //   ),
-                            // if (searchResults
-                            //     .where((element) => element.category.isDrink)
-                            //     .toList()
-                            //     .isEmpty)
-                            //   const Padding(
-                            //     padding: EdgeInsets.only(top: 80.0),
-                            //     child: _IsEmpty(),
-                            //   )
-                            // else
-                            //   SizedBox(
-                            //     child: GridView.builder(
-                            //       shrinkWrap: true,
-                            //       itemCount: searchResults
-                            //           .where(
-                            //               (element) => element.category.isDrink)
-                            //           .toList()
-                            //           .length,
-                            //       physics: const NeverScrollableScrollPhysics(),
-                            //       gridDelegate:
-                            //           const SliverGridDelegateWithFixedCrossAxisCount(
-                            //         childAspectRatio: 0.85,
-                            //         crossAxisCount: 3,
-                            //         crossAxisSpacing: 30.0,
-                            //         mainAxisSpacing: 30.0,
-                            //       ),
-                            //       itemBuilder: (context, index) => ProductCard(
-                            //         data: searchResults
-                            //             .where((element) =>
-                            //                 element.category.isDrink)
-                            //             .toList()[index],
-                            //         onCartButton: () {},
-                            //       ),
-                            //     ),
-                            //   ),
-                            // if (searchResults
-                            //     .where((element) => element.category.isSnack)
-                            //     .toList()
-                            //     .isEmpty)
-                            //   const Padding(
-                            //     padding: EdgeInsets.only(top: 80.0),
-                            //     child: _IsEmpty(),
-                            //   )
-                            // else
-                            //   SizedBox(
-                            //     child: GridView.builder(
-                            //       shrinkWrap: true,
-                            //       itemCount: searchResults
-                            //           .where(
-                            //               (element) => element.category.isSnack)
-                            //           .toList()
-                            //           .length,
-                            //       physics: const NeverScrollableScrollPhysics(),
-                            //       gridDelegate:
-                            //           const SliverGridDelegateWithFixedCrossAxisCount(
-                            //         childAspectRatio: 0.85,
-                            //         crossAxisCount: 3,
-                            //         crossAxisSpacing: 30.0,
-                            //         mainAxisSpacing: 30.0,
-                            //       ),
-                            //       itemBuilder: (context, index) => ProductCard(
-                            //         data: searchResults
-                            //             .where((element) =>
-                            //                 element.category.isSnack)
-                            //             .toList()[index],
-                            //         onCartButton: () {},
-                            //       ),
-                            //     ),
-                            //   ),
                           ],
                         ),
                       ],
@@ -671,28 +449,40 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           const SpaceHeight(8.0),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Sub total',
                                 style: TextStyle(color: AppColors.grey),
                               ),
-                              // BlocBuilder<CheckoutBloc, CheckoutState>(
-                              //   builder: (context, state) {
-                              //     final price = state.maybeWhen(
-                              //       orElse: () => 0,
-                              //       success: (products, qty, price) => price,
-                              //     );
-                              //     return Text(
-                              //       price.currencyFormatRp,
-                              //       style: const TextStyle(
-                              //         color: AppColors.primary,
-                              //         fontWeight: FontWeight.w600,
-                              //       ),
-                              //     );
-                              //   },
-                              // ),
+                              BlocBuilder<CheckoutBloc, CheckoutState>(
+                                builder: (context, state) {
+                                  final price = state.maybeWhen(
+                                      orElse: () => 0,
+                                      loaded: (products) {
+                                        if (products.isEmpty) {
+                                          return 0;
+                                        }
+                                        return products
+                                            .map((e) =>
+                                                e.product.price!
+                                                    .toIntegerFromText *
+                                                e.quantity)
+                                            .reduce(
+                                              (value, element) =>
+                                                  value + element,
+                                            );
+                                      });
+                                  return Text(
+                                    price.currencyFormatRp,
+                                    style: const TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                           const SpaceHeight(100.0),
@@ -708,7 +498,7 @@ class _HomePageState extends State<HomePage> {
                               horizontal: 24.0, vertical: 16.0),
                           child: Button.filled(
                             onPressed: () {
-                              //    context.push(const ConfirmPaymentPage());
+                              context.push(const ConfirmPaymentPage());
                             },
                             label: 'Lanjutkan Pembayaran',
                           ),
