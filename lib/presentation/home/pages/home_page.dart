@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_posresto_app/core/core/core.dart';
 import 'package:flutter_posresto_app/presentation/home/bloc/local_product/local_product_bloc.dart';
+import 'package:flutter_posresto_app/presentation/home/dialog/discount_dialog.dart';
+import 'package:flutter_posresto_app/presentation/home/dialog/service_dialog.dart';
+import 'package:flutter_posresto_app/presentation/home/dialog/tax_dialog.dart';
 
 import '../../../core/components/buttons.dart';
 import '../../../core/components/spaces.dart';
@@ -38,23 +41,12 @@ class _HomePageState extends State<HomePage> {
 
   void onCategoryTap(int index) {
     searchController.clear();
-    // if (index == 0) {
-    //   searchResults = products;
-    // } else {
-    //   searchResults = products
-    //       .where((e) => e.category.index.toString().contains(index.toString()))
-    //       .toList();
-    // }
+
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (products.isEmpty) {
-    //   return const Center(
-    //     child: CircularProgressIndicator(),
-    //   );
-    // }
     return Hero(
       tag: 'Confirmation_screen',
       child: Scaffold(
@@ -371,7 +363,12 @@ class _HomePageState extends State<HomePage> {
                                 orElse: () => Center(
                                   child: Text('No Items'),
                                 ),
-                                loaded: (products) {
+                                loaded: (
+                                  products,
+                                  discount,
+                                  tax,
+                                  serviceCharge,
+                                ) {
                                   if (products.isEmpty) {
                                     return const Center(
                                       child: Text('No Items'),
@@ -398,53 +395,96 @@ class _HomePageState extends State<HomePage> {
                               ColumnButton(
                                 label: 'Diskon',
                                 svgGenImage: Assets.icons.diskon,
-                                onPressed: () {},
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) => DiscountDialog(),
+                                ),
                               ),
                               ColumnButton(
                                 label: 'Pajak',
                                 svgGenImage: Assets.icons.pajak,
-                                onPressed: () {},
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) => TaxDialog(),
+                                ),
                               ),
                               ColumnButton(
                                 label: 'Layanan',
                                 svgGenImage: Assets.icons.layanan,
-                                onPressed: () {},
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) => ServiceDialog(),
+                                ),
                               ),
                             ],
                           ),
                           const SpaceHeight(8.0),
                           const Divider(),
                           const SpaceHeight(8.0),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Pajak',
                                 style: TextStyle(color: AppColors.grey),
                               ),
-                              Text(
-                                '11 %',
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              BlocBuilder<CheckoutBloc, CheckoutState>(
+                                builder: (context, state) {
+                                  final tax = state.maybeWhen(
+                                    orElse: () => 0,
+                                    loaded: (products, discount, tax,
+                                        serviceCharge) {
+                                      if (products.isEmpty) {
+                                        return 0;
+                                      } else {
+                                        return tax;
+                                      }
+                                    },
+                                  );
+
+                                  return Text(
+                                    '$tax %',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
                           const SpaceHeight(8.0),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Diskon',
                                 style: TextStyle(color: AppColors.grey),
                               ),
-                              Text(
-                                'Rp. 0',
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              BlocBuilder<CheckoutBloc, CheckoutState>(
+                                builder: (context, state) {
+                                  final discount = state.maybeWhen(
+                                    orElse: () => 0,
+                                    loaded: (products, discount, tax,
+                                        serviceCharge) {
+                                      if (discount == null) {
+                                        return 0;
+                                      } else {
+                                        return discount.value!
+                                            .replaceAll('.00', '')
+                                            .toIntegerFromText;
+                                      }
+                                    },
+                                  );
+                                  return Text(
+                                    '$discount',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -460,7 +500,8 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context, state) {
                                   final price = state.maybeWhen(
                                       orElse: () => 0,
-                                      loaded: (products) {
+                                      loaded: (products, discount, tax,
+                                          serviceCharge) {
                                         if (products.isEmpty) {
                                           return 0;
                                         }

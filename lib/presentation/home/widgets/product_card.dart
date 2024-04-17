@@ -103,7 +103,7 @@ class ProductCard extends StatelessWidget {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox(),
-                  loaded: (products) {
+                  loaded: (products, discount, tax, serviceCharge) {
                     return products.any((element) => element.product == data)
                         ? products
                                     .firstWhere(

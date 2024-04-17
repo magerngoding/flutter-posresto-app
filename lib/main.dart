@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_local_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_remote_datasource.dart';
+import 'package:flutter_posresto_app/data/datasource/discount_remote_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/order_remote_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/product_local_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/product_remote_datasource.dart';
 import 'package:flutter_posresto_app/presentation/auth/login_page.dart';
 import 'package:flutter_posresto_app/presentation/home/bloc/local_product/local_product_bloc.dart';
 import 'package:flutter_posresto_app/presentation/home/bloc/order/order_bloc.dart';
+import 'package:flutter_posresto_app/presentation/setting/bloc/discount/discount_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/sync_order/sync_order_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/sync_product/sync_product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,6 +63,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SyncOrderBloc(
             OrderRemoteDatasource(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => DiscountBloc(
+            DiscountRemoteDatasource(),
           ),
         ),
       ],
