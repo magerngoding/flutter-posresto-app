@@ -32,7 +32,7 @@ class _DiscountPageState extends State<DiscountPage> {
 
   @override
   void initState() {
-    context.read<DiscountBloc>().add(DiscountEvent.getDiscount());
+    context.read<DiscountBloc>().add(const DiscountEvent.getDiscount());
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class _DiscountPageState extends State<DiscountPage> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(),
                           );
                         },

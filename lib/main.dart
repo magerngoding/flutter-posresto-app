@@ -10,6 +10,7 @@ import 'package:flutter_posresto_app/data/datasource/product_remote_datasource.d
 import 'package:flutter_posresto_app/presentation/auth/login_page.dart';
 import 'package:flutter_posresto_app/presentation/home/bloc/local_product/local_product_bloc.dart';
 import 'package:flutter_posresto_app/presentation/home/bloc/order/order_bloc.dart';
+import 'package:flutter_posresto_app/presentation/setting/bloc/add_discount/add_discount_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/discount/discount_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/sync_order/sync_order_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/sync_product/sync_product_bloc.dart';
@@ -67,6 +68,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => DiscountBloc(
+            DiscountRemoteDatasource(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AddDiscountBloc(
             DiscountRemoteDatasource(),
           ),
         ),
