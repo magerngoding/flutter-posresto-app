@@ -6,6 +6,7 @@ import 'package:flutter_posresto_app/core/core/core.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_local_datasource.dart';
 import 'package:flutter_posresto_app/presentation/auth/login_page.dart';
 import 'package:flutter_posresto_app/presentation/home/pages/home_page.dart';
+import 'package:flutter_posresto_app/presentation/report/pages/report_page.dart';
 import 'package:flutter_posresto_app/presentation/setting/pages/settings_page.dart';
 import 'package:flutter_posresto_app/presentation/setting/pages/sync_data_pages.dart';
 import '../../auth/bloc/logout/logout_bloc.dart';
@@ -23,20 +24,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(
-      child: Text('This Page 1'),
-    ),
-    // const Center(
-    //   child: Text('This Page 2'),
-    // ),
+    const ReportPage(),
     SyncDataPage(),
     const SettingsPage(),
     const Center(
       child: Text('This is page 3'),
     ),
-
-    // const ManagePrinterPage(),
-    // const SettingsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_posresto_app/presentation/setting/pages/discount_page.dart';
+import 'package:flutter_posresto_app/presentation/setting/pages/sync_data_pages.dart';
 import 'package:flutter_posresto_app/presentation/setting/pages/tax_page.dart';
 
 import '../../../core/assets/assets.gen.dart';
 import '../../../core/components/spaces.dart';
 import '../../../core/core/constants/colors.dart';
+import 'manage_printer_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -81,6 +83,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         : Colors.transparent,
                     onTap: () => indexValue(2),
                   ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(12.0),
+                    leading: Assets.icons.kelolaPajak.svg(),
+                    title: const Text('Sync Data'),
+                    subtitle:
+                        const Text('Sinkoronisasi data dari dan ke server'),
+                    textColor: AppColors.primary,
+                    tileColor: currentIndex == 3
+                        ? AppColors.blueLight
+                        : Colors.transparent,
+                    onTap: () => indexValue(3),
+                  ),
                 ],
               ),
             ),
@@ -97,10 +111,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   index: currentIndex,
                   children: const [
                     DiscountPage(),
-                    Text('Printer'),
+                    ManagePrinterPage(),
                     TaxPage(),
+                    SyncDataPage(),
                     // ManageDiscount(),
-                    // ManagePrinterPage(),
+
                     // ManageTax(),
                   ],
                 ),

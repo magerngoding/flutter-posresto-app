@@ -574,7 +574,9 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
 
                                     final subTotal =
                                         price - (discount / 100 * price);
-                                    final Finaltax = subTotal * 0.11;
+                                    final totalDiscount =
+                                        discount / 100 * price;
+                                    final finaltax = subTotal * 0.11;
 
                                     List<ProductQuantity> items =
                                         state.maybeWhen(
@@ -583,6 +585,27 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                                               serviceCharge) =>
                                           products,
                                     );
+                                    final totalQty = items.fold(
+                                      0,
+                                      (previousValue, element) =>
+                                          previousValue + element.quantity,
+                                    );
+                                    // final totalPrice = state.maybeWhen(
+                                    //   orElse: () => 0,
+                                    //   loaded: (products, discount, tax,
+                                    //           serviceCharge) =>
+                                    //       products.fold(
+                                    //     0,
+                                    //     (previousValue, element) =>
+                                    //         previousValue +
+                                    //         (element.product.price!
+                                    //                 .toIntegerFromText *
+                                    //             element.quantity),
+                                    //   ),
+                                    // );
+
+                                    final totalPrice = subTotal + finaltax;
+
                                     return Flexible(
                                       child: Button.filled(
                                         onPressed: () async {
@@ -590,7 +613,7 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                                                 OrderEvent.order(
                                                   items,
                                                   discount,
-                                                  Finaltax.toInt(),
+                                                  finaltax.toInt(),
                                                   0,
                                                   totalPriceController
                                                       .text.toIntegerFromText,
@@ -600,7 +623,16 @@ class _ConfirmPaymentPageState extends State<ConfirmPaymentPage> {
                                             context: context,
                                             barrierDismissible: false,
                                             builder: (context) =>
-                                                const SuccessPaymentDialog(),
+                                                SuccessPaymentDialog(
+                                              data: items,
+                                              totalQty: totalQty,
+                                              totalPrice: totalPrice.toInt(),
+                                              totalTax: finaltax.toInt(),
+                                              totalDiscount:
+                                                  totalDiscount.toInt(),
+                                              subTotal: subTotal.toInt(),
+                                              normalPrice: price,
+                                            ),
                                           );
                                         },
                                         label: 'Bayar',
