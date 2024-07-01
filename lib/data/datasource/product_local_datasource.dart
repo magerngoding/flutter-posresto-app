@@ -1,5 +1,8 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter_posresto_app/data/models/response/product_response_model.dart';
 import 'package:flutter_posresto_app/presentation/home/models/order_model.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../presentation/home/models/product_quantity.dart';
@@ -92,6 +95,25 @@ class ProductLocalDatasource {
     final db = await instance.database;
     final List<Map<String, dynamic>> maps =
         await db.query(tableOrder, where: 'is_sync = ?', whereArgs: [0]);
+    return List.generate(maps.length, (i) {
+      return OrderModel.fromMap(maps[i]);
+    });
+  }
+
+  //get all data order
+  Future<List<OrderModel>> getAllOrder(
+    DateTime start,
+    DateTime end,
+  ) async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      tableOrder,
+      // where: 'transaction_time BETWEEN ? AND ?',
+      // whereArgs: [
+      //   DateFormat.yMd().format(start),
+      //   DateFormat.yMd().format(end),
+      // ],
+    );
     return List.generate(maps.length, (i) {
       return OrderModel.fromMap(maps[i]);
     });

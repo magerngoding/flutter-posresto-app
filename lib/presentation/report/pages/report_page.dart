@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_posresto_app/core/core/core.dart';
+import 'package:flutter_posresto_app/presentation/report/bloc/transactionReport/transaction_report_bloc.dart';
 import '../../../core/components/custom_date_picker.dart';
 import '../../../core/components/dashed_line.dart';
 import '../../../core/components/spaces.dart';
@@ -76,6 +80,18 @@ class _ReportPageState extends State<ReportPage> {
                               selectedMenu = 1;
                               title = 'Transaction Report';
                               setState(() {});
+
+                              // end data is 1 month before current date
+                              context.read<TransactionReportBloc>().add(
+                                    TransactionReportEvent.getReport(
+                                      startDate: DateTime.now(),
+                                      endtDate: DateTime.now().subtract(
+                                        Duration(
+                                          days: 30,
+                                        ),
+                                      ),
+                                    ),
+                                  );
                             },
                             isActive: selectedMenu == 1,
                           ),
@@ -122,95 +138,162 @@ class _ReportPageState extends State<ReportPage> {
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 16.0),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        searchDateFormatted,
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                    const SpaceHeight(16.0),
+                child:
+                    BlocBuilder<TransactionReportBloc, TransactionReportState>(
+                  builder: (context, state) {
+                    final totalRevenue = state.maybeMap(
+                      orElse: () => 0,
+                      laoded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.total,
+                        );
+                      },
+                    );
 
-                    // REVENUE INFO
-                    ...[
-                      const Text('REVENUE'),
-                      const SpaceHeight(8.0),
-                      const DashedLine(),
-                      const DashedLine(),
-                      const SpaceHeight(8.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Subtotal'),
-                          Text('0'),
-                        ],
-                      ),
-                      const SpaceHeight(4.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Discount'),
-                          Text('0'),
-                        ],
-                      ),
-                      const SpaceHeight(4.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Tax'),
-                          Text('0'),
-                        ],
-                      ),
-                      const SpaceHeight(8.0),
-                      const DashedLine(),
-                      const DashedLine(),
-                      const SpaceHeight(8.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('TOTAL'),
-                          Text('0'),
-                        ],
-                      ),
-                    ],
-                    const SpaceHeight(32.0),
+                    final subTotal = state.maybeMap(
+                      orElse: () => 0,
+                      laoded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.subTotal,
+                        );
+                      },
+                    );
 
-                    // PAYMENT INFO
-                    ...[
-                      const Text('PAYMENT'),
-                      const SpaceHeight(8.0),
-                      const DashedLine(),
-                      const DashedLine(),
-                      const SpaceHeight(8.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Cash'),
-                          Text('0'),
-                        ],
-                      ),
-                      const SpaceHeight(8.0),
-                      const DashedLine(),
-                      const DashedLine(),
-                      const SpaceHeight(8.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('TOTAL'),
-                          Text('0'),
-                        ],
-                      ),
-                    ],
-                  ],
+                    final discount = state.maybeMap(
+                      orElse: () => 0,
+                      laoded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.discount,
+                        );
+                      },
+                    );
+                    final tax = state.maybeMap(
+                      orElse: () => 0,
+                      laoded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.tax,
+                        );
+                      },
+                    );
+
+                    return state.maybeWhen(
+                      orElse: () {
+                        return Center(
+                          child: Text('No Data!'),
+                        );
+                      },
+                      loading: () {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                      laoded: (transactionReport) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.0),
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                searchDateFormatted,
+                                style: const TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                            const SpaceHeight(16.0),
+
+                            // REVENUE INFO
+                            ...[
+                              Text('REVENUE : $totalRevenue'),
+                              const SpaceHeight(8.0),
+                              const DashedLine(),
+                              const DashedLine(),
+                              const SpaceHeight(8.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Subtotal'),
+                                  Text('$subTotal'),
+                                ],
+                              ),
+                              const SpaceHeight(4.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Discount'),
+                                  Text('$discount'),
+                                ],
+                              ),
+                              const SpaceHeight(4.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Tax'),
+                                  Text('$tax'),
+                                ],
+                              ),
+                              const SpaceHeight(8.0),
+                              const DashedLine(),
+                              const DashedLine(),
+                              const SpaceHeight(8.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('TOTAL'),
+                                  Text('$totalRevenue'),
+                                ],
+                              ),
+                            ],
+                            const SpaceHeight(32.0),
+
+                            // PAYMENT INFO
+                            // ...[
+                            //   const Text('PAYMENT'),
+                            //   const SpaceHeight(8.0),
+                            //   const DashedLine(),
+                            //   const DashedLine(),
+                            //   const SpaceHeight(8.0),
+                            //   const Row(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text('Cash'),
+                            //       Text('0'),
+                            //     ],
+                            //   ),
+                            //   const SpaceHeight(8.0),
+                            //   const DashedLine(),
+                            //   const DashedLine(),
+                            //   const SpaceHeight(8.0),
+                            //   const Row(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text('TOTAL'),
+                            //       Text('0'),
+                            //     ],
+                            //   ),
+                            // ],
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ),

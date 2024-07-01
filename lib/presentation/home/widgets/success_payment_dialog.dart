@@ -14,7 +14,6 @@ import 'package:flutter_posresto_app/presentation/home/models/product_quantity.d
 import '../../../core/components/buttons.dart';
 import '../../../core/components/spaces.dart';
 import '../bloc/checkout/checkout_bloc.dart';
-import '../models/order_item.dart';
 
 class SuccessPaymentDialog extends StatefulWidget {
   final List<ProductQuantity> data;

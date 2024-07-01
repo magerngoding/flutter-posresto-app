@@ -5,6 +5,7 @@ import 'package:flutter_posresto_app/core/core/core.dart';
 import 'package:flutter_posresto_app/data/datasource/auth_local_datasource.dart';
 import 'package:flutter_posresto_app/data/datasource/product_local_datasource.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/order_model.dart';
 import '../../models/product_quantity.dart';
@@ -45,16 +46,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           totalItem: totalItem,
           idKasir: userData.user!.id!,
           namaKasir: userData.user!.name!,
-          transactionTime: DateTime.now().toIso8601String(),
+          transactionTime: DateFormat.yMd().format(DateTime.now()),
           isSync: 0,
           orderItems: event.items,
         );
 
         await ProductLocalDatasource.instance.saveOrder(dataInput);
 
-        emit(_Loaded(
-          dataInput,
-        ));
+        emit(_Loaded(dataInput));
       },
     );
   }
